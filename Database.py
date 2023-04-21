@@ -1,0 +1,28 @@
+from typing import Collection
+import pymongo
+import json
+
+class Database:
+    def __init__(self, database, collection):
+        self.connect(database, collection)
+
+    def connect(self, database, collection):
+        try:
+            connectionString = "localhost:27017"
+            self.clusterConnection = pymongo.MongoClient(
+                connectionString,
+                tlsAllowInvalidCertificates=True
+            )
+            self.db = self.clusterConnection[database]
+            self.collection = self.db[collection]
+            print("Database conectado com sucesso!")
+        except Exception as e:
+            print(e)
+
+    def reset_database(self):
+        try:
+            self.db.drop_collection(self.collection)
+            self.collection.insert_many(dataset)
+            print("Database resetado com sucesso")
+        except Exception as e:
+            print(e)
